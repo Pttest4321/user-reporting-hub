@@ -9,6 +9,7 @@ import CreateReport from "./pages/CreateReport";
 import UserManagement from "./pages/admin/UserManagement";
 import ReportManagement from "./pages/admin/ReportManagement";
 import GroupManagement from "./pages/admin/GroupManagement";
+import UserDetails from "./pages/UserDetails";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/create" element={<CreateReport />} />
+            <Route path="/profile" element={<UserDetails />} />
             <Route path="/admin/users" element={<UserManagement />} />
             <Route path="/admin/reports" element={<ReportManagement />} />
             <Route path="/admin/groups" element={<GroupManagement />} />
