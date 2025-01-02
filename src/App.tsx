@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { DashboardLayout } from "./components/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import CreateReport from "./pages/CreateReport";
@@ -18,7 +18,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <BrowserRouter basename="/">
         <DashboardLayout>
           <Routes>
             <Route path="/" element={<Dashboard />} />
@@ -27,6 +27,7 @@ const App = () => (
             <Route path="/admin/users" element={<UserManagement />} />
             <Route path="/admin/reports" element={<ReportManagement />} />
             <Route path="/admin/groups" element={<GroupManagement />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </DashboardLayout>
       </BrowserRouter>
