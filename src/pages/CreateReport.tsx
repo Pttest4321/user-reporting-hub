@@ -7,16 +7,43 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { PlusCircle, MinusCircle } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { addDays } from "date-fns";
 
 const CreateReport = () => {
-  const [findings, setFindings] = useState([{ id: 1, description: "" }]);
+  const [findings, setFindings] = useState([
+    { 
+      id: 1, 
+      name: "", 
+      riskLevel: "",
+      cvssVector: "",
+      cvssScore: ""
+    }
+  ]);
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState("step1");
+  const [dateRange, setDateRange] = useState({
+    from: new Date(),
+    to: addDays(new Date(), 7)
+  });
 
   const addFinding = () => {
     setFindings([
       ...findings,
-      { id: findings.length + 1, description: "" },
+      { 
+        id: findings.length + 1, 
+        name: "", 
+        riskLevel: "",
+        cvssVector: "",
+        cvssScore: ""
+      }
     ]);
   };
 
@@ -26,22 +53,29 @@ const CreateReport = () => {
     }
   };
 
-  const updateFinding = (id: number, description: string) => {
+  const updateFinding = (id: number, field: string, value: string) => {
     setFindings(
       findings.map((finding) =>
-        finding.id === id ? { ...finding, description } : finding
+        finding.id === id ? { ...finding, [field]: value } : finding
       )
     );
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would send the data to your server
     toast({
       title: "Success",
       description: "Report created successfully",
     });
   };
+
+  const riskLevels = [
+    "Critical",
+    "High",
+    "Medium",
+    "Low",
+    "Informative"
+  ];
 
   return (
     <div className="space-y-6">
@@ -72,8 +106,27 @@ const CreateReport = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="date">Report Date</Label>
-                  <Input id="date" type="date" required />
+                  <Label>Project Date Range</Label>
+                  <div className="flex space-x-4">
+                    <div>
+                      <Label>From</Label>
+                      <Calendar
+                        mode="single"
+                        selected={dateRange.from}
+                        onSelect={(date) => date && setDateRange({ ...dateRange, from: date })}
+                        className="rounded-md border"
+                      />
+                    </div>
+                    <div>
+                      <Label>To</Label>
+                      <Calendar
+                        mode="single"
+                        selected={dateRange.to}
+                        onSelect={(date) => date && setDateRange({ ...dateRange, to: date })}
+                        className="rounded-md border"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -89,7 +142,7 @@ const CreateReport = () => {
             <TabsContent value="step2">
               <div className="space-y-4">
                 {findings.map((finding) => (
-                  <div key={finding.id} className="space-y-2">
+                  <div key={finding.id} className="space-y-4 p-4 border rounded-lg">
                     <div className="flex items-center justify-between">
                       <Label>Finding {finding.id}</Label>
                       <Button
@@ -101,14 +154,61 @@ const CreateReport = () => {
                         <MinusCircle className="h-4 w-4" />
                       </Button>
                     </div>
-                    <Textarea
-                      placeholder="Describe the finding"
-                      value={finding.description}
-                      onChange={(e) =>
-                        updateFinding(finding.id, e.target.value)
-                      }
-                      required
-                    />
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <Label>Finding Name</Label>
+                        <Input
+                          placeholder="Search for finding..."
+                          value={finding.name}
+                          onChange={(e) => updateFinding(finding.id, "name", e.target.value)}
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <Label>Risk Level</Label>
+                        <Select 
+                          value={finding.riskLevel}
+                          onValueChange={(value) => updateFinding(finding.id, "riskLevel", value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select risk level" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {riskLevels.map((level) => (
+                              <SelectItem key={level} value={level.toLowerCase()}>
+                                {level}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label>CVSS Vector</Label>
+                        <Input
+                          placeholder="Enter CVSS vector"
+                          value={finding.cvssVector}
+                          onChange={(e) => updateFinding(finding.id, "cvssVector", e.target.value)}
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <Label>CVSS Score</Label>
+                        <Input
+                          type="number"
+                          min="0"
+                          max="10"
+                          step="0.1"
+                          placeholder="Enter CVSS score"
+                          value={finding.cvssScore}
+                          onChange={(e) => updateFinding(finding.id, "cvssScore", e.target.value)}
+                          required
+                        />
+                      </div>
+                    </div>
                   </div>
                 ))}
 
