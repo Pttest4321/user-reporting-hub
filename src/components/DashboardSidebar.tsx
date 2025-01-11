@@ -7,6 +7,7 @@ import {
   UserCog,
   FolderCog,
   UsersRound,
+  Search,
 } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 import {
@@ -48,6 +49,11 @@ const adminMenuItems = [
     title: "Group Management",
     path: "/admin/groups",
     icon: UsersRound,
+  },
+  {
+    title: "Findings Management",
+    path: "/admin/findings",
+    icon: Search,
   },
 ];
 
@@ -103,4 +109,4 @@ export function DashboardSidebar() {
       </SidebarContent>
     </Sidebar>
   );
-};
+}
