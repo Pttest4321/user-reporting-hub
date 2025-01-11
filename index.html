@@ -3,15 +3,154 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>user-reporting-hub</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
-    <meta property="og:image" content="/og-image.png" />
+    <title>User Reporting Hub</title>
+    <meta name="description" content="User reporting system" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+      .page-transition { transition: all 0.3s ease-in-out; }
+      .bg-sidebar { background-color: #f8f9fa; }
+      .text-sidebar-foreground { color: #1a1a1a; }
+      .bg-accent { background-color: #f3f4f6; }
+    </style>
   </head>
+  <body class="bg-gray-50">
+    <div class="min-h-screen flex w-full">
+      <!-- Sidebar -->
+      <div class="hidden md:flex flex-col w-64 bg-sidebar">
+        <div class="p-4">
+          <h2 class="text-xl font-bold mb-4">Main Menu</h2>
+          <nav class="space-y-2">
+            <a href="/" class="flex items-center space-x-2 p-2 rounded hover:bg-accent">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <path d="M3 9h18" />
+              </svg>
+              <span>Dashboard</span>
+            </a>
+            <a href="/create" class="flex items-center space-x-2 p-2 rounded bg-accent">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8v8m-4-4h8" />
+              </svg>
+              <span>Create Report</span>
+            </a>
+          </nav>
 
-  <body>
-    <div id="root"></div>
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
+          <h2 class="text-xl font-bold mt-8 mb-4">Admin</h2>
+          <nav class="space-y-2">
+            <a href="/admin/users" class="flex items-center space-x-2 p-2 rounded hover:bg-accent">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              <span>User Management</span>
+            </a>
+            <a href="/admin/reports" class="flex items-center space-x-2 p-2 rounded hover:bg-accent">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <path d="M14 2v6h6" />
+                <path d="M16 13H8" />
+                <path d="M16 17H8" />
+                <path d="M10 9H8" />
+              </svg>
+              <span>Report Management</span>
+            </a>
+            <a href="/admin/groups" class="flex items-center space-x-2 p-2 rounded hover:bg-accent">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              <span>Group Management</span>
+            </a>
+            <a href="/admin/findings" class="flex items-center space-x-2 p-2 rounded hover:bg-accent">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+              <span>Findings Management</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <main class="flex-1 p-6">
+        <div class="space-y-6">
+          <div>
+            <h1 class="text-3xl font-semibold">Create Report</h1>
+            <p class="text-gray-600">Create a new report</p>
+          </div>
+
+          <div class="bg-white p-6 rounded-lg shadow">
+            <!-- Tabs -->
+            <div class="border-b border-gray-200 mb-6">
+              <nav class="flex space-x-8" aria-label="Tabs">
+                <button class="border-b-2 border-blue-500 py-4 px-1 text-sm font-medium text-blue-600">
+                  Technical Details
+                </button>
+                <button class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                  Findings
+                </button>
+                <button class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                  Additional Details
+                </button>
+              </nav>
+            </div>
+
+            <!-- Form -->
+            <form class="space-y-6">
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Report Title</label>
+                  <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Enter report title" required>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Project Name</label>
+                  <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Enter project name" required>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Project Date Range</label>
+                  <div class="flex space-x-4">
+                    <div class="flex-1">
+                      <label class="block text-sm font-medium text-gray-700">From</label>
+                      <input type="date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div class="flex-1">
+                      <label class="block text-sm font-medium text-gray-700">To</label>
+                      <input type="date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Next Step
+              </button>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      // Basic tab switching functionality
+      document.querySelectorAll('nav button').forEach(button => {
+        button.addEventListener('click', () => {
+          // Remove active state from all buttons
+          document.querySelectorAll('nav button').forEach(btn => {
+            btn.classList.remove('border-blue-500', 'text-blue-600');
+            btn.classList.add('border-transparent', 'text-gray-500');
+          });
+          
+          // Add active state to clicked button
+          button.classList.remove('border-transparent', 'text-gray-500');
+          button.classList.add('border-blue-500', 'text-blue-600');
+        });
+      });
+    </script>
   </body>
 </html>
